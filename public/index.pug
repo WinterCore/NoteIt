@@ -1,0 +1,40 @@
+extends layout
+block content
+	body.index
+		main
+			form#signup(action="#", method="POST")
+				h1#logo NoteIt
+				div#byWC by&nbsp;WinterCore
+				div
+					input#name.field(type="text", name="name", autocomplete="off")
+					label(for="name") Name
+					div.inputError
+				div
+					input#username.field(type="text", name="username", autocomplete="off")
+					label(for="username") Username
+					div.inputError
+				div
+					input#password.field(type="password", name="password", autocomplete="off")
+					label(for="password") Password
+					div.inputError
+				button#signupSubmit.submitButton Signup
+			form#login(action="#", method="POST")
+				h1#logo NoteIt
+				div#byWC by&nbsp;WinterCore
+				div
+					input#lUsername.field(type="text", name="username", autocomplete="off")
+					label(for="lUsername") Username
+					div.inputError
+				div
+					input#lPassword.field(type="password", name="password", autocomplete="off")
+					label(for="lPassword") Password
+					div.inputError
+				button#loginSubmit.submitButton Login
+			div.switchLinkBox
+				a#switcher(href="#") No Account ? Create one
+		div#toastMessage
+			div.text
+			div.undo Undo
+		script(src="/script.js")
+		script(src="/indexScript.js")
+

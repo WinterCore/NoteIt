@@ -1,0 +1,46 @@
+extends layout
+block content
+	body.dashboard
+		header
+			h2 Hey #{name.split(" ")[0]}
+		div#dialogContainer
+			div#dialog
+				h2#dTitle
+				div#dContents
+				div.buttons
+					div#closeButton Close
+		main
+			section.createNote
+				form#createNote(method="POST", action="#")
+					div
+						input#title.field(autocomplete="off", type="text", name="title")
+						label(for="title") Title
+						div.inputError
+					div#textareaContainer
+						label(for="contents") Contents
+						textarea#contents.bigField(autocomplete="off", name="content", rows="1")
+						div.inputError
+					button.submitButton Create Note
+			section#notes
+				ul#noteList
+					li(style="display: none;")
+						div.avatar
+						div.links
+							div
+							span
+						div.deleteNote
+							img(src="x.svg")
+					each note in notes
+						li
+							div.avatar= note.title.substr(0, 1)
+							div.links
+								div= note.title
+								span!= note.content
+							div.deleteNote(data-id=note._id.toHexString())
+								img(src="x.svg")
+
+		div#toastMessage
+			div.text
+			div.undo Undo
+		script(src="/script.js")
+		script(src="/dashboardScript.js")
