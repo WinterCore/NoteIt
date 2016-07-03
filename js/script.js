@@ -67,9 +67,6 @@ function fieldErrorAdder(fields) {
 			$this.parent().removeClass('active');
 		}
 	});
-	undo.on('click', function () {
-		toastMessage.removeClass('active');
-		undoHandler();
-	});
+
 	$('.submitButton').ripple();
 }());

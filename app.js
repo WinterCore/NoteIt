@@ -10,7 +10,8 @@ const app = express();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const MongoURI = "mongodb://wintercore:12345@localhost:27017/note?authSource=admin";
+// const MongoURI = "mongodb://wintercore:12345@localhost:27017/note?authSource=admin";
+const MongoURI = "mongodb://admin:eKVxgmaVeW4h@localhost:27017/note";
 
 function generatePasswordSalt(args) {
 	return new Promise((resolve, reject) => {
@@ -242,8 +243,8 @@ function initExpress(db) {
 	});
 
 	//Starting the server
-	app.listen(3000, function () {
-		console.log("Listening on port", 3000);
+	app.listen(process.env.OPENSHIFT_NODEJS_PORT, function () {
+		console.log("Listening on port", process.env.OPENSHIFT_NODEJS_PORT);
 	});
 }
 dbConnect()
