@@ -10,8 +10,7 @@ const app = express();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-// const MongoURI = "mongodb://wintercore:12345@localhost:27017/note?authSource=admin";
-const MongoURI = OPENSHIFT_note_DB_URL;
+const MongoURI = process.env.MONGO_URI;
 
 function generatePasswordSalt(args) {
 	return new Promise((resolve, reject) => {
@@ -48,14 +47,17 @@ function checkParams(params) {
 }
 function dbConnect() {
 	return new Promise((resolve, reject) => {
-		MongoClient.connect(MongoURI, function(err, db) {
+		MongoClient.connect(MongoURI, {
+			useUnifiedTopology: true
+		}, function(err, client) {
 			if (err) reject(err);
-			else resolve(db);
+			else resolve(client.db('noteit'));
 		});
 	});
 }
 function checkUsernameExists(args) {
 	return new Promise((resolve, reject) => {
+		console.log(args.db);
 		args.db.collection('note').findOne({username: args.username}, function (err, doc) {
 			if (err) throw new Error(err);
 			if (doc) {
@@ -121,7 +123,7 @@ function initExpress(db) {
 	app.use(cookieParser());
 	app.use(session(
 		{
-			secret: "^UIFMPx4c=kC1-$mBB^Rz!h_m",
+			secret: process.env.SESSION_SECRET,
 			store: new MongoStore({
 				url: MongoURI
 			}),
@@ -158,7 +160,7 @@ function initExpress(db) {
 			.then(generatePasswordSalt)
 			.then(generatePasswordHash)
 			.then(createNewUser)
-			.catch(err => res.json({error: "DatabaseError"}));
+			.catch(err => console.log(err) || res.json({error: "DatabaseError"}));
 	});
 
 	app.post('/createNote', function (req, res) {
@@ -243,8 +245,8 @@ function initExpress(db) {
 	});
 
 	//Starting the server
-	app.listen(process.env.OPENSHIFT_NODEJS_PORT, function () {
-		console.log("Listening on port", process.env.OPENSHIFT_NODEJS_PORT);
+	app.listen(process.env.PORT, function () {
+		console.log("Listening on port", process.env.PORT);
 	});
 }
 dbConnect()
