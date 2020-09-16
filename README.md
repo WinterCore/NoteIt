@@ -2,6 +2,7 @@
 
 NoteIt is a simple application for writing notes.
 
+## [Live Demo](https://noteit.upperdown.me)
 
 ![](noteit.png)
 
